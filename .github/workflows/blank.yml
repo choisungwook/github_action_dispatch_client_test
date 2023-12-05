@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+    tags:
+    - "v*.*.*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: trigger Client
+      run: |
+        curl -X POST https://api.github.com/repos/choisungwook/github_action_dispatch_server_test/dispatches \
+        -H 'Accept: application/vnd.github.v3+json' \
+        -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
+        -d '{"event_type": "TRIGGER_API_TEST", "client_payload": { "message": "test" }}'
